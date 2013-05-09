@@ -1,0 +1,16 @@
+{
+  "name": "ninja-bluetooth",
+  "version": "0.0.0",
+  "description": "A simple NinjaBlocks Client driver that emits events on Bluetooth and BlueTooth LE device discovery",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "Elliot Shepherd",
+  "license": "MIT",
+  "dependencies": {
+    "bluetooth-serial-port":"git://github.com/eelcocramer/node-bluetooth-serial-port.git",
+    "noble":"git://github.com/sandeepmistry/noble.git"
+  }
+}
