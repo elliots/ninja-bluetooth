@@ -18,6 +18,7 @@ function Device() {
   this.V = 0;
   this.D = 14;
   this.G = 0;
+  var self = this;
 
   try {
       var bt = new (require('bluetooth-serial-port')).BluetoothSerialPort();
