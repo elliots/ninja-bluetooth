@@ -1,6 +1,5 @@
 var util = require('util'),
-  stream = require('stream'),
-  BlueTooth = require('bluetooth-serial-port');
+  stream = require('stream');
 
 util.inherits(Driver,stream);
 util.inherits(Device,stream);
@@ -8,16 +7,18 @@ util.inherits(Device,stream);
 function Driver(opts,app) {
   var self = this;
   app.on('client::up',function(){
-    self.emit('register', new Device());
+    self.emit('register', new Device(app));
   });
+  this.app = app;
 }
 
-function Device() {
+function Device(app) {
   this.writeable = false;
   this.readable = true;
   this.V = 0;
   this.D = 14;
   this.G = 0;
+  this.app = app;
   var self = this;
 
   try {
@@ -25,15 +26,19 @@ function Device() {
 
       bt.on('found', function(address, name) {
         self.emit('data', address);
+        self.app.log.info("Found bluetooth device", name, address);
       });
 
-      bt.on('finished', function() {
+
+      function scan() {
         bt.inquire();
-      });
+        self.app.log.debug("Scanning for bluetooth devices");
+      }
+      bt.on('finished', scan);
 
-      bt.inquire();
+      scan();
   } catch (e) {
-    console.log("BlueTooth isn't working.");
+    self.app.log.warn("Bluetooth is not available.");
   }
 
   try {
@@ -57,11 +62,11 @@ function Device() {
       console.log('noble -> scanStop');
     });
     noble.on('discover', function(peripheral) {
-        console.log('noble -> discover: ' + peripheral);
+        self.app.log.info('noble -> discover: ', peripheral);
         self.emit('data', peripheral.uuid);
      });
   } catch(e) {
-    console.warn("BlueTooth LE isn't working");
+    self.app.log.warn("Bluetooth LE is not available.");
   }
 
 }
