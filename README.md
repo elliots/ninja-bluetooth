@@ -3,8 +3,10 @@ ninja-bluetooth
 
 This driver for The NinjaBlocks Client that emits bluetooth addresses. Useful for state events when a persons phone in nearby.
 
-Bluetooth LE is supported only on OSX.
-Bluetooth is supported on everything *but* OSX. :/
+The BLE functionality depends on https://github.com/sandeepmistry/noble which supports Linux and OSX
+The Bluetooth functionality depends on https://github.com/eelcocramer/node-bluetooth-serial-port which only supports Linux.
+
+It exposes device addresses as HID events, so you can (for instance) get an event when you (or at least, your phone) gets home.
 
 VERY UNTESTED. NOT EVEN BETA.
 
